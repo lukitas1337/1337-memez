@@ -16,7 +16,7 @@ const MemeMachine = () => {
               value={state.currentMeme ? state.currentMeme.name : ""}
               readOnly
             />
-            <div className="imageContainer">
+            <div className="imageContainer max-w-[750px]">
               {state.currentMeme ? (
                 <img
                   src={state.currentMeme.url}

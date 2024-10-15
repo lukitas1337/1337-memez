@@ -9,7 +9,7 @@ const MemeMachine = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredMemes, setFilteredMemes] = useState([]); // For storing searched memes
   const [currentMeme, setCurrentMeme] = useState(null); // Initialize as null to handle loading state
-  const [imgName, setImgName] = useState(""); // New state for imgName
+  const [imgName, setImgName] = useState(""); // State for imgName
   const imageContainerRef = useRef(null);
 
   // Function to fetch a random meme
@@ -64,22 +64,66 @@ const MemeMachine = () => {
     setImgName(meme.name); // Update the imgName with the clicked meme name
   };
 
+  // Function to handle image upload from the device
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0]; // Get the uploaded file
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Create a custom meme object with the uploaded image
+        const uploadedMeme = {
+          url: reader.result, // Base64 image data
+          name: file.name.replace(/\.[^/.]+$/, ""), // Get filename without extension
+        };
+        setCurrentMeme(uploadedMeme); // Set the uploaded image as current meme
+        setImgName(uploadedMeme.name); // Set the filename as the imgName
+      };
+      reader.readAsDataURL(file); // Read the file as a data URL (base64)
+    }
+  };
+
+  const compressImage = (src, callback) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const maxWidth = 500; // Set a maximum width for the image
+      const scaleSize = maxWidth / img.width;
+      canvas.width = maxWidth;
+      canvas.height = img.height * scaleSize;
+  
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      
+      // Convert the canvas to base64 with a lower quality
+      const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7); // 0.7 quality
+      callback(compressedBase64);
+    };
+  };
+
   const saveMemeToLocalStorage = () => {
     if (currentMeme) {
       domtoimage.toPng(imageContainerRef.current).then((base64Image) => {
-        const savedMeme = {
-          name: imgName, // Use the editable imgName value
-          topText: topText,
-          bottomText: bottomText,
-          image: base64Image,
-          savedAt: new Date().toISOString(),
-        };
-
-        let savedMemes = JSON.parse(localStorage.getItem("savedMemes")) || [];
-        savedMemes.push(savedMeme);
-        localStorage.setItem("savedMemes", JSON.stringify(savedMemes));
-
-        alert("Meme saved successfully!");
+        compressImage(base64Image, (compressedImage) => {
+          const savedMeme = {
+            name: imgName, // Use the editable imgName value
+            topText: topText,
+            bottomText: bottomText,
+            image: compressedImage, // Save the compressed image
+            savedAt: new Date().toISOString(),
+          };
+  
+          let savedMemes = JSON.parse(localStorage.getItem("savedMemes")) || [];
+          savedMemes.push(savedMeme);
+  
+          try {
+            localStorage.setItem("savedMemes", JSON.stringify(savedMemes));
+            alert("Meme saved successfully!");
+          } catch (e) {
+            console.error("Error saving to localStorage: ", e);
+            alert("Storage limit exceeded! Try clearing some saved memes.");
+          }
+        });
       });
     }
   };
@@ -139,7 +183,15 @@ const MemeMachine = () => {
           </div>
           <div className="controlSide p-16">
             <div className="upperButtonContainer flex justify-around">
-              <button className="uplBtn btn btn-accent">UPLOAD MA MEMEZ</button>
+              <label className="uplBtn btn btn-accent">
+                UPLOAD MA MEMEZ
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden" // Hide the actual file input
+                  onChange={handleImageUpload} // Handle image upload
+                />
+              </label>
               <button className="rndmBtn btn btn-warning" onClick={fetchRandomMeme}>
                 GIMME RANDOM
               </button>

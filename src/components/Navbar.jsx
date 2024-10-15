@@ -12,6 +12,7 @@ const Navbar = () => {
       document.body.style.backgroundSize = "200px 200px";
       document.body.style.backgroundRepeat = "repeat";
       document.body.style.backgroundPosition = "top left";
+      document.body.style.height = "4000px";
     } else {
       document.body.style.backgroundImage = "none";
     }

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // Updated MemeContext with local storage management
 import { createContext, useReducer, useEffect } from "react";
 

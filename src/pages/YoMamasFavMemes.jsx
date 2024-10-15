@@ -95,7 +95,7 @@ const YoMamasFavMemes = () => {
                 className="w-full object-contain h-[250px]" // Set a fixed height and maintain aspect ratio
               />
               <div className="expMessage pt-4">
-                <p className="memeExp">THIS MEME IS DOOMED IN:</p>
+                <p className="memeExp">💀🔥💀THIS MEME IS DOOMED IN:💀🔥💀</p>
                 <p className="memeExpTimer">
                   {meme.timeRemaining || calculateTimeRemaining(meme.savedAt)}
                 </p>
@@ -105,13 +105,13 @@ const YoMamasFavMemes = () => {
                   className="dwnMeme btn btn-success"
                   onClick={() => downloadMeme(meme)}
                 >
-                  SAVE MEME
+                  💾 SAVE MEME
                 </button>
                 <button
                   className="delMeme btn btn-error"
                   onClick={() => deleteMeme(index)}
                 >
-                  GO TO HELL
+                 🔥 GO TO HELL
                 </button>
               </div>
             </div>

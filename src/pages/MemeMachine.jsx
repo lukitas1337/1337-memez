@@ -159,7 +159,7 @@ const MemeMachine = () => {
           <div className="controlSide p-16">
             <div className="upperButtonContainer flex justify-around">
               <label className="uplBtn btn btn-accent">
-                UPLOAD MA MEMEZ
+              ⚡️ UPLOAD MA MEMEZ
                 <input
                   type="file"
                   accept="image/*"
@@ -168,7 +168,7 @@ const MemeMachine = () => {
                 />
               </label>
               <button className="rndmBtn btn btn-warning" onClick={fetchRandomMeme}>
-                GIMME RANDOM
+              💥 GIMME RANDOM
               </button>
             </div>
             <input
@@ -199,10 +199,10 @@ const MemeMachine = () => {
                 className="genBtn btn btn-success"
                 onClick={saveMemeToLocalStorage}
               >
-                I MAKE THIS
+               ✨ I MAKE THIS
               </button>
               <button className="resBtn btn btn-error" onClick={resetInputs}>
-                GET OUTTA HERE
+              🧨 GET OUTTA HERE
               </button>
             </div>
             {/* Search Grid */}

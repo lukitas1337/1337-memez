@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Keyframes for clockwise spinning */
+@keyframes spin-clockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Keyframes for counterclockwise spinning */
+@keyframes spin-counterclockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Apply the spinning animations with infinite duration */
+.spin-clockwise {
+  animation: spin-clockwise 4s linear infinite;
+}
+
+.spin-counterclockwise {
+  animation: spin-counterclockwise 4s linear infinite;
+}

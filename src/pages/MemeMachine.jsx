@@ -9,6 +9,7 @@ const MemeMachine = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredMemes, setFilteredMemes] = useState([]); // For storing searched memes
   const [currentMeme, setCurrentMeme] = useState(null); // Initialize as null to handle loading state
+  const [imgName, setImgName] = useState(""); // New state for imgName
   const imageContainerRef = useRef(null);
 
   // Function to fetch a random meme
@@ -20,6 +21,7 @@ const MemeMachine = () => {
         const memes = data.data.memes;
         const randomMeme = memes[Math.floor(Math.random() * memes.length)];
         setCurrentMeme(randomMeme); // Set random meme as current
+        setImgName(randomMeme.name); // Set meme name to imgName state
       }
     } catch (error) {
       console.error("Error fetching random meme:", error);
@@ -59,13 +61,14 @@ const MemeMachine = () => {
   // Function to set clicked image as the main meme
   const handleMemeClick = (meme) => {
     setCurrentMeme(meme); // Update the selected meme and trigger re-render
+    setImgName(meme.name); // Update the imgName with the clicked meme name
   };
 
   const saveMemeToLocalStorage = () => {
     if (currentMeme) {
       domtoimage.toPng(imageContainerRef.current).then((base64Image) => {
         const savedMeme = {
-          name: currentMeme.name,
+          name: imgName, // Use the editable imgName value
           topText: topText,
           bottomText: bottomText,
           image: base64Image,
@@ -95,8 +98,8 @@ const MemeMachine = () => {
               className="imgName w-full input input-bordered input-base-100 my-4"
               type="text"
               placeholder="Meme name"
-              value={currentMeme ? currentMeme.name : ""}
-              readOnly
+              value={imgName} // Controlled input value
+              onChange={(e) => setImgName(e.target.value)} // Allow editing
             />
             <div
               className="imageContainer max-w-[750px] relative"

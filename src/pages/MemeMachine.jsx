@@ -1,12 +1,12 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import MemeContext from "../context/MemeContext";
 import domtoimage from "dom-to-image";
 
 const MemeMachine = () => {
   const { state, fetchRandomMeme } = useContext(MemeContext);
 
-  const topTextRef = useRef(null);
-  const bottomTextRef = useRef(null);
+  const [topText, setTopText] = useState("");
+  const [bottomText, setBottomText] = useState("");
   const imageContainerRef = useRef(null);
 
   const saveMemeToLocalStorage = () => {
@@ -15,8 +15,8 @@ const MemeMachine = () => {
       domtoimage.toPng(imageContainerRef.current).then((base64Image) => {
         const savedMeme = {
           name: state.currentMeme.name,
-          topText: topTextRef.current.value,
-          bottomText: bottomTextRef.current.value,
+          topText: topText,
+          bottomText: bottomText,
           image: base64Image,
           savedAt: new Date().toISOString(),
         };
@@ -57,15 +57,13 @@ const MemeMachine = () => {
                   {/* Display the top and bottom text over the image */}
                   <div
                     className="topText absolute top-2 left-0 w-full text-center text-white text-xl font-bold"
-                    ref={topTextRef}
                   >
-                    {topTextRef.current ? topTextRef.current.value : ""}
+                    {topText}
                   </div>
                   <div
                     className="bottomText absolute bottom-2 left-0 w-full text-center text-white text-xl font-bold"
-                    ref={bottomTextRef}
                   >
-                    {bottomTextRef.current ? bottomTextRef.current.value : ""}
+                    {bottomText}
                   </div>
                 </>
               ) : (
@@ -93,13 +91,15 @@ const MemeMachine = () => {
                 className="topInput w-full input input-bordered input-primary mt-6"
                 type="text"
                 placeholder="TOP_TEXT"
-                ref={topTextRef}
+                value={topText}
+                onChange={(e) => setTopText(e.target.value)}
               />
               <input
                 className="btmInput w-full input input-bordered input-secondary my-6"
                 type="text"
                 placeholder="BOTTOM_TEXT"
-                ref={bottomTextRef}
+                value={bottomText}
+                onChange={(e) => setBottomText(e.target.value)}
               />
             </div>
             <div className="lowerButtonContainer flex justify-around">

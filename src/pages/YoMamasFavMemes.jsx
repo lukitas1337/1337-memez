@@ -1,13 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import MemeContext from "../context/MemeContext";
 
 const YoMamasFavMemes = () => {
-  const [savedMemes, setSavedMemes] = useState([]);
-
-  // Load memes from local storage on component mount
-  useEffect(() => {
-    const memes = JSON.parse(localStorage.getItem("savedMemes")) || [];
-    setSavedMemes(memes);
-  }, []);
+  const { state, deleteMeme, downloadMeme } = useContext(MemeContext);
+  const savedMemes = state.savedMemes;
 
   // Function to calculate the time remaining for each meme
   const calculateTimeRemaining = (savedAt) => {
@@ -30,34 +26,11 @@ const YoMamasFavMemes = () => {
   // Update the countdown every second
   useEffect(() => {
     const interval = setInterval(() => {
-      setSavedMemes((prevMemes) => {
-        return prevMemes.map((meme) => {
-          return {
-            ...meme,
-            timeRemaining: calculateTimeRemaining(meme.savedAt),
-          };
-        });
-      });
+      // Since this uses context, no need for `setSavedMemes` anymore.
     }, 1000);
 
     return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
-
-  // Function to delete a meme from local storage
-  const deleteMeme = (index) => {
-    const updatedMemes = [...savedMemes];
-    updatedMemes.splice(index, 1); // Remove the meme at the given index
-    setSavedMemes(updatedMemes);
-    localStorage.setItem("savedMemes", JSON.stringify(updatedMemes)); // Update local storage
-  };
-
-  // Function to download the meme image
-  const downloadMeme = (meme) => {
-    const link = document.createElement("a");
-    link.href = meme.image; // Use the base64 image URL
-    link.download = `${meme.name}.png`; // Save with the meme name
-    link.click();
-  };
 
   return (
     <>
@@ -80,7 +53,7 @@ const YoMamasFavMemes = () => {
               <div className="expMessage pt-4">
                 <p className="memeExp">THIS MEME IS DOOMED IN:</p>
                 <p className="memeExpTimer">
-                  {meme.timeRemaining || calculateTimeRemaining(meme.savedAt)}
+                  {calculateTimeRemaining(meme.savedAt)}
                 </p>
               </div>
               <div className="memeButtons flex justify-between p-8">

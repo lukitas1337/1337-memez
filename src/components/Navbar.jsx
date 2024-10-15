@@ -1,7 +1,14 @@
 const Navbar = () => {
   return (
     <>
-    <div>Navbar</div>
+    <div className="nav p-6">
+      <ul className="flex justify-center gap-8">
+        <li className="text-info">MEME MACHINE</li>
+        <li className="text-warning">YO MAMAS FAV MEMES</li>
+      </ul>
+    </div>
+
+
     <button className="btn btn-primary">Primary</button>
     <button className="btn btn-secondary">Secondary</button>
     <button className="btn btn-accent">Accent</button>

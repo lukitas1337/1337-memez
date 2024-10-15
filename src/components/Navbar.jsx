@@ -2,15 +2,15 @@ const Navbar = () => {
   return (
     <>
     <div>Navbar</div>
-    <button className="btn btn-primary">Sheeesh</button>
-    <button className="btn btn-secondary">Sheeesh</button>
-    <button className="btn btn-accent">Sheeesh</button>
-    <button className="btn btn-neutral">Sheeesh</button>
-    <button className="btn btn-base-100">Sheeesh</button>
-    <button className="btn btn-info">Sheeesh</button>
-    <button className="btn btn-success">Sheeesh</button>
-    <button className="btn btn-warning">Sheeesh</button>
-    <button className="btn btn-error">Sheeesh</button>
+    <button className="btn btn-primary">Primary</button>
+    <button className="btn btn-secondary">Secondary</button>
+    <button className="btn btn-accent">Accent</button>
+    <button className="btn btn-neutral">Neutral</button>
+    <button className="btn btn-base-100">Base-100</button>
+    <button className="btn btn-info">Info</button>
+    <button className="btn btn-success">Success</button>
+    <button className="btn btn-warning">Warning</button>
+    <button className="btn btn-error">Error</button>
     </>
   )
 }

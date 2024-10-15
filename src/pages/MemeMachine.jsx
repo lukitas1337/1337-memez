@@ -29,6 +29,11 @@ const MemeMachine = () => {
     }
   };
 
+  const resetInputs = () => {
+    setTopText("");
+    setBottomText("");
+  };
+
   return (
     <>
       <section className="memeMachine text-center">
@@ -115,7 +120,12 @@ const MemeMachine = () => {
               >
                 I MAKE THIS
               </button>
-              <button className="resBtn btn btn-error">GET OUTTA HERE</button>
+              <button
+                className="resBtn btn btn-error"
+                onClick={resetInputs}
+              >
+                GET OUTTA HERE
+              </button>
             </div>
           </div>
         </div>

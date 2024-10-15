@@ -9,7 +9,7 @@ const Navbar = () => {
   // Use effect to apply/remove the background image based on "fuckoMode"
   useEffect(() => {
     if (state.fuckoMode) {
-      document.body.style.backgroundImage = `url('public/unicorn.gif')`;
+      document.body.style.backgroundImage = `url('https://i.ibb.co/D4ZGDv6/unicorn.gif')`;
       document.body.style.backgroundSize = "200px 200px";
       document.body.style.backgroundRepeat = "repeat";
       document.body.style.backgroundPosition = "top left";
@@ -56,7 +56,7 @@ const Navbar = () => {
           <img
             ref={logoRef} // Ref to track rotation
             className={`logo h-20 ${state.isClockwise ? "spin-clockwise" : "spin-counterclockwise"}`}
-            src="public/stupid-face.png"
+            src="https://i.ibb.co/FVzQ5JX/stupid-face.png"
             alt=""
             style={{ transform: `rotate(${state.rotation}deg)` }} // Apply rotation
           />

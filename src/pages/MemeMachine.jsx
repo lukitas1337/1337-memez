@@ -11,7 +11,6 @@ const MemeMachine = () => {
 
   const saveMemeToLocalStorage = () => {
     if (state.currentMeme) {
-      // Use dom-to-image to capture the meme
       domtoimage.toPng(imageContainerRef.current).then((base64Image) => {
         const savedMeme = {
           name: state.currentMeme.name,
@@ -21,7 +20,6 @@ const MemeMachine = () => {
           savedAt: new Date().toISOString(),
         };
 
-        // Save the meme to local storage
         let savedMemes = JSON.parse(localStorage.getItem("savedMemes")) || [];
         savedMemes.push(savedMeme);
         localStorage.setItem("savedMemes", JSON.stringify(savedMemes));
@@ -56,12 +54,20 @@ const MemeMachine = () => {
                   />
                   {/* Display the top and bottom text over the image */}
                   <div
-                    className="topText absolute top-2 left-0 w-full text-center text-white text-xl font-bold"
+                    className="topText absolute top-2 left-0 w-full text-center text-white uppercase font-bold text-4xl"
+                    style={{
+                      textShadow:
+                        "2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000",
+                    }}
                   >
                     {topText}
                   </div>
                   <div
-                    className="bottomText absolute bottom-2 left-0 w-full text-center text-white text-xl font-bold"
+                    className="bottomText absolute bottom-2 left-0 w-full text-center text-white uppercase font-bold text-4xl"
+                    style={{
+                      textShadow:
+                        "2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000",
+                    }}
                   >
                     {bottomText}
                   </div>

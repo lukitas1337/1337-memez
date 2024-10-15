@@ -1,10 +1,11 @@
 import Navbar from "./components/Navbar"
+import MemeMachine from "./pages/MemeMachine"
 
 const App = () => {
   return (
     <>
     <Navbar />
-    <div>App</div>
+    <MemeMachine/>
     </>
   )
 }

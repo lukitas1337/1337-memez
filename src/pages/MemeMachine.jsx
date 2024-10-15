@@ -31,6 +31,7 @@ const MemeMachine = () => {
   // Fetch a random meme when the component mounts (initial load)
   useEffect(() => {
     fetchRandomMeme(); // Fetch a random meme on component mount
+    cleanUpExpiredMemes();
   }, []);
 
   // Function to search memes from the Imgflip API
@@ -101,32 +102,51 @@ const MemeMachine = () => {
     };
   };
 
-  const saveMemeToLocalStorage = () => {
-    if (currentMeme) {
-      domtoimage.toPng(imageContainerRef.current).then((base64Image) => {
-        compressImage(base64Image, (compressedImage) => {
-          const savedMeme = {
-            name: imgName, // Use the editable imgName value
-            topText: topText,
-            bottomText: bottomText,
-            image: compressedImage, // Save the compressed image
-            savedAt: new Date().toISOString(),
-          };
-  
-          let savedMemes = JSON.parse(localStorage.getItem("savedMemes")) || [];
-          savedMemes.push(savedMeme);
-  
-          try {
-            localStorage.setItem("savedMemes", JSON.stringify(savedMemes));
-            alert("Meme saved successfully!");
-          } catch (e) {
-            console.error("Error saving to localStorage: ", e);
-            alert("Storage limit exceeded! Try clearing some saved memes.");
-          }
-        });
+// Function to check for expired memes (7 days old)
+const cleanUpExpiredMemes = () => {
+  let savedMemes = JSON.parse(localStorage.getItem("savedMemes")) || [];
+
+  const now = new Date().getTime();
+  const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+
+  // Filter out memes older than 7 days
+  savedMemes = savedMemes.filter(meme => {
+    const memeSavedAt = new Date(meme.savedAt).getTime();
+    return now - memeSavedAt < oneWeekInMilliseconds; // Keep memes less than 7 days old
+  });
+
+  localStorage.setItem("savedMemes", JSON.stringify(savedMemes)); // Save back the updated meme list
+};
+
+const saveMemeToLocalStorage = () => {
+  if (currentMeme) {
+    domtoimage.toPng(imageContainerRef.current).then((base64Image) => {
+      compressImage(base64Image, (compressedImage) => {
+        const savedMeme = {
+          name: imgName, // Use the editable imgName value
+          topText: topText,
+          bottomText: bottomText,
+          image: compressedImage, // Save the compressed image
+          savedAt: new Date().toISOString(), // Save the time of creation
+        };
+
+        // Clean up expired memes before saving new one
+        cleanUpExpiredMemes();
+
+        let savedMemes = JSON.parse(localStorage.getItem("savedMemes")) || [];
+        savedMemes.push(savedMeme);
+
+        try {
+          localStorage.setItem("savedMemes", JSON.stringify(savedMemes));
+          alert("Meme saved successfully!");
+        } catch (e) {
+          console.error("Error saving to localStorage: ", e);
+          alert("Storage limit exceeded! Try clearing some saved memes.");
+        }
       });
-    }
-  };
+    });
+  }
+};
 
   const resetInputs = () => {
     setTopText("");

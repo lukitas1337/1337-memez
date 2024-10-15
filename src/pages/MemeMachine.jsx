@@ -110,18 +110,18 @@ const MemeMachine = () => {
 
   return (
     <>
-      <section className="memeMachine text-center h-screen">
-        <div className="controlRoom rounded-md flex justify-center align-middle">
-          <div className="imageSide">
+      <section className="memeMachine text-center min-h-screen">
+        <div className="controlRoom flex flex-col lg:flex-row justify-center lg:space-x-8 lg:align-middle">
+          <div className="imageSide w-full lg:w-1/2 p-4">
             <input
-              className="imgName w-full input input-bordered input-base-100 my-4"
+              className="imgName w-full input input-bordered input-base-100 mb-4"
               type="text"
               placeholder="Meme name"
               value={state.imgName} // Controlled input value from context
               onChange={(e) => dispatch({ type: "SET_IMG_NAME", payload: e.target.value })} // Allow editing
             />
             <div
-              className="imageContainer max-w-[750px] relative"
+              className="imageContainer max-w-full lg:max-w-[750px] relative mx-auto"
               ref={imageContainerRef}
             >
               {state.currentMeme ? (
@@ -129,11 +129,11 @@ const MemeMachine = () => {
                   <img
                     src={state.currentMeme.url}
                     alt={state.currentMeme.name}
-                    className="rounded"
+                    className="rounded max-w-full"
                   />
                   {/* Display the top and bottom text over the image */}
                   <div
-                    className="topText absolute top-2 left-0 w-full text-center text-white uppercase font-bold text-4xl"
+                    className="topText absolute top-2 left-0 w-full text-center text-white uppercase font-bold text-2xl sm:text-3xl lg:text-4xl"
                     style={{
                       textShadow:
                         "2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000",
@@ -142,7 +142,7 @@ const MemeMachine = () => {
                     {state.topText}
                   </div>
                   <div
-                    className="bottomText absolute bottom-2 left-0 w-full text-center text-white uppercase font-bold text-4xl"
+                    className="bottomText absolute bottom-2 left-0 w-full text-center text-white uppercase font-bold text-2xl sm:text-3xl lg:text-4xl"
                     style={{
                       textShadow:
                         "2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000",
@@ -156,10 +156,10 @@ const MemeMachine = () => {
               )}
             </div>
           </div>
-          <div className="controlSide p-16">
-            <div className="upperButtonContainer flex justify-around">
-              <label className="uplBtn btn btn-accent">
-              ⚡️ UPLOAD MA MEMEZ
+          <div className="controlSide w-full lg:w-1/2 p-4 lg:p-16">
+            <div className="upperButtonContainer flex flex-col sm:flex-row justify-around">
+              <label className="uplBtn btn btn-accent w-full sm:w-auto mb-4 sm:mb-0">
+                ⚡️ UPLOAD MA MEMEZ
                 <input
                   type="file"
                   accept="image/*"
@@ -167,8 +167,11 @@ const MemeMachine = () => {
                   onChange={handleImageUpload} // Handle image upload
                 />
               </label>
-              <button className="rndmBtn btn btn-warning" onClick={fetchRandomMeme}>
-              💥 GIMME RANDOM
+              <button
+                className="rndmBtn btn btn-warning w-full sm:w-auto"
+                onClick={fetchRandomMeme}
+              >
+                💥 GIMME RANDOM
               </button>
             </div>
             <input
@@ -194,15 +197,18 @@ const MemeMachine = () => {
                 onChange={(e) => handleBottomTextChange(e.target.value)}
               />
             </div>
-            <div className="lowerButtonContainer flex justify-around">
+            <div className="lowerButtonContainer flex flex-col sm:flex-row justify-around">
               <button
-                className="genBtn btn btn-success"
+                className="genBtn btn btn-success w-full sm:w-auto mb-4 sm:mb-0"
                 onClick={saveMemeToLocalStorage}
               >
-               ✨ I MAKE THIS
+                ✨ I MAKE THIS
               </button>
-              <button className="resBtn btn btn-error" onClick={resetInputs}>
-              🧨 GET OUTTA HERE
+              <button
+                className="resBtn btn btn-error w-full sm:w-auto"
+                onClick={resetInputs}
+              >
+                🧨 GET OUTTA HERE
               </button>
             </div>
             {/* Search Grid */}
@@ -210,7 +216,7 @@ const MemeMachine = () => {
               {state.filteredMemes.map((meme) => (
                 <img
                   key={meme.id}
-                  className="w-36 cursor-pointer"
+                  className="w-24 sm:w-36 cursor-pointer"
                   src={meme.url}
                   alt={meme.name}
                   onClick={() => handleMemeClick(meme)} // Click to set main meme

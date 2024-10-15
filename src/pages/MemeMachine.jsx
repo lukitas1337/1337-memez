@@ -127,6 +127,13 @@ const MemeMachine = () => {
                 GET OUTTA HERE
               </button>
             </div>
+            <div className="searchGrid grid grid-cols-2 gap-4 p-6">
+              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
+              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
+              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
+              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
+              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
+            </div>
           </div>
         </div>
       </section>

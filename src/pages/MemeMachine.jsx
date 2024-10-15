@@ -1,19 +1,71 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import MemeContext from "../context/MemeContext";
 import domtoimage from "dom-to-image";
 
 const MemeMachine = () => {
-  const { state, fetchRandomMeme } = useContext(MemeContext);
-
+  const { state } = useContext(MemeContext);
   const [topText, setTopText] = useState("");
   const [bottomText, setBottomText] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredMemes, setFilteredMemes] = useState([]); // For storing searched memes
+  const [currentMeme, setCurrentMeme] = useState(null); // Initialize as null to handle loading state
   const imageContainerRef = useRef(null);
 
+  // Function to fetch a random meme
+  const fetchRandomMeme = async () => {
+    try {
+      const response = await fetch("https://api.imgflip.com/get_memes");
+      const data = await response.json();
+      if (data.success) {
+        const memes = data.data.memes;
+        const randomMeme = memes[Math.floor(Math.random() * memes.length)];
+        setCurrentMeme(randomMeme); // Set random meme as current
+      }
+    } catch (error) {
+      console.error("Error fetching random meme:", error);
+    }
+  };
+
+  // Fetch a random meme when the component mounts (initial load)
+  useEffect(() => {
+    fetchRandomMeme(); // Fetch a random meme on component mount
+  }, []);
+
+  // Function to search memes from the Imgflip API
+  const searchMemesFromAPI = async (searchTerm) => {
+    try {
+      const response = await fetch("https://api.imgflip.com/get_memes");
+      const data = await response.json();
+      if (data.success) {
+        const memes = data.data.memes.filter((meme) =>
+          meme.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredMemes(memes);
+      }
+    } catch (error) {
+      console.error("Error fetching memes:", error);
+    }
+  };
+
+  // Handle search input change and trigger API call
+  useEffect(() => {
+    if (searchTerm) {
+      searchMemesFromAPI(searchTerm);
+    } else {
+      setFilteredMemes([]); // Clear search grid when search term is empty
+    }
+  }, [searchTerm]);
+
+  // Function to set clicked image as the main meme
+  const handleMemeClick = (meme) => {
+    setCurrentMeme(meme); // Update the selected meme and trigger re-render
+  };
+
   const saveMemeToLocalStorage = () => {
-    if (state.currentMeme) {
+    if (currentMeme) {
       domtoimage.toPng(imageContainerRef.current).then((base64Image) => {
         const savedMeme = {
-          name: state.currentMeme.name,
+          name: currentMeme.name,
           topText: topText,
           bottomText: bottomText,
           image: base64Image,
@@ -43,18 +95,18 @@ const MemeMachine = () => {
               className="imgName w-full input input-bordered input-base-100 my-4"
               type="text"
               placeholder="Meme name"
-              value={state.currentMeme ? state.currentMeme.name : ""}
+              value={currentMeme ? currentMeme.name : ""}
               readOnly
             />
             <div
               className="imageContainer max-w-[750px] relative"
               ref={imageContainerRef}
             >
-              {state.currentMeme ? (
+              {currentMeme ? (
                 <>
                   <img
-                    src={state.currentMeme.url}
-                    alt={state.currentMeme.name}
+                    src={currentMeme.url}
+                    alt={currentMeme.name}
                     className="rounded"
                   />
                   {/* Display the top and bottom text over the image */}
@@ -85,10 +137,7 @@ const MemeMachine = () => {
           <div className="controlSide p-16">
             <div className="upperButtonContainer flex justify-around">
               <button className="uplBtn btn btn-accent">UPLOAD MA MEMEZ</button>
-              <button
-                className="rndmBtn btn btn-warning"
-                onClick={fetchRandomMeme}
-              >
+              <button className="rndmBtn btn btn-warning" onClick={fetchRandomMeme}>
                 GIMME RANDOM
               </button>
             </div>
@@ -96,6 +145,8 @@ const MemeMachine = () => {
               className="searchInput w-full input input-bordered input-base-100 mt-6"
               type="text"
               placeholder="SEARCH_MEMEZ"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)} // Trigger search on change
             />
             <div className="inputContainer">
               <input
@@ -120,19 +171,21 @@ const MemeMachine = () => {
               >
                 I MAKE THIS
               </button>
-              <button
-                className="resBtn btn btn-error"
-                onClick={resetInputs}
-              >
+              <button className="resBtn btn btn-error" onClick={resetInputs}>
                 GET OUTTA HERE
               </button>
             </div>
+            {/* Search Grid */}
             <div className="searchGrid grid grid-cols-2 gap-4 p-6">
-              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
-              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
-              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
-              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
-              <img className="w-36" src="https://a.pinatafarm.com/590x462/fb98437b64/i-was-told-there-would-be.jpg" alt="" />
+              {filteredMemes.map((meme) => (
+                <img
+                  key={meme.id}
+                  className="w-36 cursor-pointer"
+                  src={meme.url}
+                  alt={meme.name}
+                  onClick={() => handleMemeClick(meme)} // Click to set main meme
+                />
+              ))}
             </div>
           </div>
         </div>

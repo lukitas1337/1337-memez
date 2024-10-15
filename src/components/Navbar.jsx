@@ -56,7 +56,7 @@ const Navbar = () => {
           <img
             ref={logoRef} // Ref to track rotation
             className={`logo h-20 ${state.isClockwise ? "spin-clockwise" : "spin-counterclockwise"}`}
-            src="public/stupid-face.svg"
+            src="public/stupid-face.png"
             alt=""
             style={{ transform: `rotate(${state.rotation}deg)` }} // Apply rotation
           />

@@ -1,13 +1,13 @@
 import Navbar from "./components/Navbar"
 import MemeMachine from "./pages/MemeMachine"
-import YoMamasFavMemes from "./pages/YoMamasFavMemes"
+import {MemeProvider} from "./context/MemeContext"
 
 const App = () => {
   return (
     <>
-    <Navbar />
-    <MemeMachine/>
-    <YoMamasFavMemes />
+    <MemeProvider>
+      <MemeMachine />
+    </MemeProvider>
     </>
   )
 }

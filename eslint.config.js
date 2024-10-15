@@ -24,6 +24,7 @@ export default [
       'react-refresh': reactRefresh,
     },
     rules: {
+      'react/prop-types': 'off',
       undefined: 'off',
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,

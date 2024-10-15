@@ -93,7 +93,7 @@ const MemeMachine = () => {
 
         try {
           localStorage.setItem("savedMemes", JSON.stringify(savedMemes));
-          alert("Meme saved successfully!");
+          alert("Meme sent straight to yo mamas favs!");
         } catch (e) {
           console.error("Error saving to localStorage: ", e);
           alert("Storage limit exceeded! Try clearing some saved memes.");
@@ -110,7 +110,7 @@ const MemeMachine = () => {
 
   return (
     <>
-      <section className="memeMachine text-center">
+      <section className="memeMachine text-center h-screen">
         <div className="controlRoom rounded-md flex justify-center align-middle">
           <div className="imageSide">
             <input
@@ -152,7 +152,7 @@ const MemeMachine = () => {
                   </div>
                 </>
               ) : (
-                <p>Loading...</p>
+                <p>Some patience bruh...</p>
               )}
             </div>
           </div>
